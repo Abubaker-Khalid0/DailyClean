@@ -1,26 +1,26 @@
 # DailyClean 6.0.0
 
-إضافة Chrome لحجب طلبات إعلانات Dailymotion، وتنقية إعدادات الإعلانات، والضغط على زر التخطي الأصلي عند إتاحته. الواجهة عربية وتستخدم مكوّنات shadcn/ui الأصلية مع دعم الوضع الداكن ولوحة المفاتيح.
+A Chrome extension that blocks Dailymotion ad requests, sanitizes ad-related settings, and automatically clicks the native skip button when available. The interface is in Arabic and uses official shadcn/ui components, with dark mode and keyboard accessibility support.
 
-## الاستخدام
+## Usage
 
-1. إن كنت حمّلت الإضافة من هذا المشروع سابقًا: افتح `chrome://extensions` واضغط **إعادة تحميل** في بطاقة DailyClean. وافق على الصلاحيات الجديدة المتوقعة إن طلب Chrome ذلك: تشغيل المعالجة على Dailymotion وتحويل مصادر IMA المحددة.
-2. للتثبيت الجديد: فعّل **وضع المطوّر** ثم **تحميل إضافة غير مضغوطة**، واختر مجلد `release/DailyClean` بعد فك الحزمة، أو مجلد المشروع الذي يحتوي على `manifest.json`.
-3. أعد تحميل صفحة الفيديو على Dailymotion. يجب أن تعرض الواجهة حالة اتصال الصفحة والمشغّل.
-4. التخطي التلقائي مفعّل افتراضيًا. يمكن إيقافه مع إبقاء الحجب مفعّلًا. الزر الاحتياطي يظهر داخل حدود الفيديو، أسفل اليمين فوق شريط التحكم؛ ينتقل معه عند التمرير وملء الشاشة.
-5. تغيير الحماية يوقف أو يشغّل القواعد واعتراضات الطلبات. يلزم تحديث صفحة الفيديو لاستبدال المكتبة والإعدادات التي حمّلها المشغّل بالفعل؛ يظهر زر تحديث واضح لهذا الغرض، ولا تعاد الصفحة تلقائيًا أثناء المشاهدة.
+1. **If you previously installed the extension from this project:** Open `chrome://extensions` and click **Reload** on the DailyClean extension card. Approve the expected new permissions if Chrome prompts you: running scripts on Dailymotion and redirecting specific IMA resources.
+2. **For a fresh installation:** Enable **Developer mode**, click **Load unpacked**, and select the `release/DailyClean` folder after extracting the package, or the project directory containing `manifest.json`.
+3. Reload the Dailymotion video page. The interface should display the connection status of both the page and the video player.
+4. **Automatic skipping is enabled by default.** You can disable it while keeping ad blocking enabled. The fallback skip button appears inside the video player, at the bottom-right corner above the control bar. It stays correctly positioned when scrolling or entering fullscreen mode.
+5. Toggling protection enables or disables the blocking rules and request interception. You must refresh the video page to replace the libraries and settings already loaded by the player. A clearly visible refresh button is provided for this purpose. The page will not automatically reload during playback.
 
-## حدود السلوك
+## Behavioral Limitations
 
-- لا تقدّم الإضافة `currentTime` ولا تغيّر سرعة تشغيل الفيديو. تضغط زر الإعلان الأصلي فقط عندما يكون ظاهرًا وقابلًا للاستخدام. إذا لم تتوفر وسيلة تخطٍّ آمنة يظهر «بانتظار إتاحة التخطي».
-- قواعد الشبكة محصورة في الطلبات الصادرة من نطاق Dailymotion، بما فيها إطارات مشغّله المضمّنة في مواقع أخرى. لا تحجب الطلبات التي تبدأها المواقع الأخرى نفسها.
-- «إجراءات الحماية» تعد طلبات المعالجة والتخطي، وليست عدد الإعلانات التي أزيلت. لا تشمل عدّاد الحجب الشبكي. يبدأ هذا العداد الجديد من الصفر بدل نقل عداد الإصدار السابق غير الدقيق.
-- الإعلانات المدمجة داخل نفس مسار الفيديو، وتغييرات مشغّل الموقع، قد تتطلب تحديثًا. نجاح الاختبارات لا يضمن إزالة كل إعلان في كل جلسة أو منطقة.
-- لا تجمع الإضافة بيانات مشاهدة أو ترسلها إلى خادم خاص بها. الإعدادات والعدادات محلية. لا تُحمّل الواجهة JavaScript أو CSS من CDN.
+- The extension does not modify `currentTime` or change video playback speed. It only clicks the native ad skip button when that button is visible and usable. If no safe skipping method is available, the interface displays **"Waiting for skip availability."**
+- Network blocking rules are restricted to requests originating from the Dailymotion domain, including embedded Dailymotion player frames on other websites. Requests initiated directly by those websites are not blocked.
+- **"Protection Actions"** counts processing and skipping operations, not the number of ads removed. It does not include the network blocking counter. This new counter starts at zero instead of migrating the inaccurate counter from the previous version.
+- Ads embedded directly into the video stream and changes to Dailymotion's player may require an update. Passing all tests does not guarantee that every advertisement will be removed in every session or region.
+- The extension does not collect viewing data or transmit it to its own server. All settings and counters are stored locally. The interface does not load JavaScript or CSS from a CDN.
 
-## التطوير والتحقق
+## Development and Testing
 
-يتطلب البناء Node.js 20 أو أحدث. أصول الواجهة المبنية موجودة في `build/`، لذا لا تحتاج إلى Node لتشغيل الإضافة.
+Building the extension requires Node.js 20 or later. Prebuilt interface assets are included in `build/`, so Node.js is not required to run the extension.
 
 ```sh
 npm ci
@@ -30,10 +30,32 @@ npm test
 npm run package
 ```
 
-يمكن تحديد Chromium موجود بالفعل عبر متغير `CHROMIUM_PATH`. نتائج اختبارات المتصفح وصور الواجهة تُكتب داخل `test-results/`. تستخدم الاختبارات نسخة معزولة من الإضافة وملف متصفح مستقل؛ لا تلمس ملف المستخدم. `node tests/live-smoke.cjs` اختبار حي اختياري بعد `npm test`، ويحتاج شبكة وتوفّر المشغّل.
+You can specify an existing Chromium installation using the `CHROMIUM_PATH` environment variable.
 
-اختبارات الانحدار تشمل: صلاحيات IMA والتحويل الفعلي، حصر القواعد بالموقع، التفعيل والتعطيل والتنقل، JSON وXHR، حماية المحتوى العادي، التخطي التلقائي، إطارات Dailymotion، ملء الشاشة، استعادة المراقبين، تزامن العدادات، والتحكم من الواجهة.
+Browser test results and interface screenshots are saved in `test-results/`. Tests use an isolated extension instance and a separate browser profile, leaving the user's existing browser profile untouched.
 
-## مكونات الواجهة
+`node tests/live-smoke.cjs` is an optional live smoke test that can be run after `npm test`. It requires network access and an available Dailymotion player.
 
-تم جلب Button وSwitch وCard من سجل [shadcn/ui](https://ui.shadcn.com/) الرسمي (`new-york`) مع تعديل مسار استيراد أداة `cn` فقط. المصادر داخل `ui/components/ui/`، وترخيص MIT في `ui/SHADCN-LICENSE.md`. تعتمد على React وRadix وتُجمع محليًا. زر المشغّل خفيف داخل Shadow DOM ومعزول بصريًا عن CSS الخاص بالموقع.
+Regression tests cover:
+
+- IMA permissions and actual resource redirection.
+- Restricting blocking rules to Dailymotion.
+- Enabling, disabling, and navigation behavior.
+- JSON and XHR request handling.
+- Protection of regular, non-ad content.
+- Automatic ad skipping.
+- Embedded Dailymotion player frames.
+- Fullscreen behavior.
+- Observer recovery.
+- Counter synchronization.
+- Interface controls and interactions.
+
+## UI Components
+
+The Button, Switch, and Card components were obtained from the official [shadcn/ui](https://ui.shadcn.com/) registry using the `new-york` style, with only the `cn` utility import path modified.
+
+Component source files are located in `ui/components/ui/`, and the MIT license is included in `ui/SHADCN-LICENSE.md`.
+
+The interface uses React and Radix, with all assets bundled locally.
+
+The in-player skip button is lightweight, rendered inside a Shadow DOM, and visually isolated from Dailymotion's CSS.
