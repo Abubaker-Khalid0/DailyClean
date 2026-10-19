@@ -1,0 +1,71 @@
+{
+  "manifest_version": 3,
+  "name": "DailyClean — Dailymotion Ad Blocker",
+  "version": "6.0.0",
+  "description": "حجب إعلانات Dailymotion وتخطي الإعلان تلقائياً عند توفر زر التخطي، مع تحكم واضح في الحماية.",
+  "author": "DailyClean Team",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "declarativeNetRequest",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://*.dailymotion.com/*",
+    "*://imasdk.googleapis.com/*",
+    "*://*.2mdn.net/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ad_network_rules",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.dailymotion.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "stubs/google-ima.js"
+      ],
+      "matches": [
+        "*://*.dailymotion.com/*"
+      ]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "DailyClean — حجب إعلانات Dailymotion"
+  },
+  "minimum_chrome_version": "111"
+}

@@ -1,0 +1,2 @@
+#dailyclean-control { position: fixed !important; display: flex !important; justify-content: flex-start !important; pointer-events: none !important; z-index: 2147483647 !important; direction: rtl !important; margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent !important; }
+#dailyclean-control[hidden] { display: none !important; }
